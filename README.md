@@ -1,0 +1,1 @@
+研修用のjsprimer ajax部分のアプリ作成
