@@ -1,30 +1,38 @@
-async function fetchUserInfo(userId) {
-  console.log("--- start ---");
-  try {
-    const response = await fetch(
-      `https://api.github.com/users/${encodeURIComponent(userId)}`
-    );
-    if (!response.ok) {
-      console.error("エラーレスポンス", response);
-    } else {
-      const userInfo = await response.json();
-      const view = escapeHTML`<h4>${userInfo.name} (@${userInfo.login})</h4>
-      <img src="${userInfo.avatar_url}" alt="${userInfo.login}" height="100">
-      <dl>
-        <dt>Location</dt>
-        <dd>${userInfo.location}</dd>
-        <dt>Repositories</dt>
-        <dd>${userInfo.public_repos}</dd>
-      </dl>`;
+function main() {
+  fetchUserInfo("alto-I").catch((error) => {
+    console.error(`エラーが発生しました ${error}`);
+  });
+}
 
-      const result = document.getElementById("result");
-      result.innerHTML = view;
-    }
-  } catch (error) {
-    console.error(error);
-  } finally {
-    console.log("--- end ---");
+async function fetchUserInfo(userId) {
+  const response = await fetch(
+    `https://api.github.com/users/${encodeURIComponent(userId)}`
+  );
+  if (!response.ok) {
+    return Promise.reject(
+      new Error(`${response.status}: ${response.statusText}`)
+    );
+  } else {
+    const userInfo = await response.json();
+    const view = createView(userInfo);
+    displayView(view);
   }
+}
+
+function createView(userInfo) {
+  return escapeHTML`<h4>${userInfo.name} (@${userInfo.login})</h4>
+  <img src="${userInfo.avatar_url}" alt="${userInfo.login}" height="100">
+  <dl>
+    <dt>Location</dt>
+    <dd>${userInfo.location}</dd>
+    <dt>Repositories</dt>
+    <dd>${userInfo.public_repos}</dd>
+  </dl>`;
+}
+
+function displayView(view) {
+  const result = document.getElementById("result");
+  result.innerHTML = view;
 }
 
 function escapeSpecialChars(str) {
