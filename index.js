@@ -1,10 +1,13 @@
-function main() {
-  fetchUserInfo("alto-I")
-    .then((userInfo) => createView(userInfo))
-    .then((view) => displayView(view))
-    .catch((error) => {
+async function main() {
+  try {
+    const userInfo = await fetchUserInfo("alto-I");
+    const view = createView(userInfo);
+    displayView(view);
+  } catch {
+    (error) => {
       console.error(`エラーが発生しました ${error}`);
-    });
+    };
+  }
 }
 
 async function fetchUserInfo(userId) {
