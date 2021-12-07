@@ -8,7 +8,7 @@ async function fetchUserInfo(userId) {
       console.error("エラーレスポンス", response);
     } else {
       const userInfo = await response.json();
-      const view = `<h4>${userInfo.name} (@${userInfo.login})</h4>
+      const view = escapeHTML`<h4>${userInfo.name} (@${userInfo.login})</h4>
       <img src="${userInfo.avatar_url}" alt="${userInfo.login}" height="100">
       <dl>
         <dt>Location</dt>
