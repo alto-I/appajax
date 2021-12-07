@@ -1,6 +1,7 @@
 async function main() {
   try {
-    const userInfo = await fetchUserInfo("alto-I");
+    const userId = getUserId();
+    const userInfo = await fetchUserInfo(userId);
     const view = createView(userInfo);
     displayView(view);
   } catch {
@@ -21,6 +22,10 @@ async function fetchUserInfo(userId) {
   } else {
     return response.json();
   }
+}
+
+function getUserId() {
+  return document.getElementById("userId").value;
 }
 
 function createView(userInfo) {
