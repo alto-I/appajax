@@ -1,7 +1,10 @@
 function main() {
-  fetchUserInfo("alto-I").catch((error) => {
-    console.error(`エラーが発生しました ${error}`);
-  });
+  fetchUserInfo("alto-I")
+    .then((userInfo) => createView(userInfo))
+    .then((view) => displayView(view))
+    .catch((error) => {
+      console.error(`エラーが発生しました ${error}`);
+    });
 }
 
 async function fetchUserInfo(userId) {
@@ -13,9 +16,7 @@ async function fetchUserInfo(userId) {
       new Error(`${response.status}: ${response.statusText}`)
     );
   } else {
-    const userInfo = await response.json();
-    const view = createView(userInfo);
-    displayView(view);
+    return response.json();
   }
 }
 
